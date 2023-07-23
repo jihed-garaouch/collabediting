@@ -1,0 +1,54 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+/src/frontend/collaborative-working/.vscode/
+
+/src/frontend/collaborative-working/node_modules
+/src/frontend/collaborative-working/*.pnp
+/src/frontend/collaborative-working/*.pnp.js
+
+# testing
+/src/frontend/collaborative-working/coverage
+
+# production
+/src/frontend/collaborative-working/build
+
+# misc
+/src/frontend/collaborative-working/.DS_Store
+/src/frontend/collaborative-working/.env.local
+/src/frontend/collaborative-working/.env.development.local
+/src/frontend/collaborative-working/.env.test.local
+/src/frontend/collaborative-working/.env.production.local
+
+/src/frontend/collaborative-working/npm-debug.log*
+/src/frontend/collaborative-working/yarn-debug.log*
+/src/frontend/collaborative-working/yarn-error.log*
