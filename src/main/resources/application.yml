@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/Collab_DB?createDatabaseIfNotExist=true
+    url: jdbc:postgresql://localhost:5432/collab_db?createDatabaseIfNotExist=true
     username: postgres
     password: pass
     driver-class-name: org.postgresql.Driver
