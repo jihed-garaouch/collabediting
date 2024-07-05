@@ -1,4 +1,5 @@
 spring:
+  githubBaseUrl: https://github.com
   datasource:
     url: jdbc:postgresql://localhost:5432/collab_db?createDatabaseIfNotExist=true
     username: postgres
@@ -13,6 +14,11 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  oauth2:
+    client: Ov23liIKWhTiZABJRTQd
+    authorizeUrl: login/oauth/authorize
+    redirectUri: http://localhost:8080/api/authorize
+    scopes: public_repo
+
 server:
   port: 4444
-

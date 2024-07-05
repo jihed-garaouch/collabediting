@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import SignIn from './components/SignIn';
 import CodeEditor from './components/CodeEditor';
 import SignUp from "./components/SignUp";
+import {login} from "./services/authService";
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const handleLogin = (token) => {
 
-        setIsAuthenticated(true);
-        localStorage.setItem('token', token);
+      login();
     };
 
     return (
