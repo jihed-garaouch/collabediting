@@ -19,28 +19,7 @@ import axios from "axios";
 
 export default function SignIn( { onLogin }) {
     const navigate = useNavigate();
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
 
-        const userData = {
-            email: data.get('email'),
-            password: data.get('password'),
-        };
-
-        axios.post('http://localhost:8080/api/v1/auth/signin', userData)
-            .then((response) => {
-                // Handle successful response here
-                console.log(response.data);
-                // Call onLogin or other handler with token or other response data
-                onLogin(response.data.token);
-                navigate("/") ;
-            })
-            .catch((error) => {
-                // Handle error here
-                console.error('There was an error!', error);
-            });
-    };
 
     return (
 
@@ -58,36 +37,14 @@ export default function SignIn( { onLogin }) {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Sign in with your github account
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
+                    <Box  sx={{ mt: 1 }}>
+
                         <Button
                             type="submit"
                             fullWidth
+                            onClick={onLogin}
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >

@@ -1,5 +1,6 @@
 package com.collab.collabediting.config;
 
+import com.collab.collabediting.handlers.CustomAuthenticationSuccessHandler;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,29 +14,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+
 public class SecurityConfiguration{
-    private final  JwtAuthenticationFilter jwtAuthFilter;
-    private  final AuthenticationProvider authenticationProvider;
+
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
-                .csrf()
-                .disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeHttpRequests((authorize) ->
+                        authorize .requestMatchers("/hello").authenticated()
+                                .requestMatchers("/**").permitAll()
+
+                                )
+                    .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/github")
+                .successHandler(new CustomAuthenticationSuccessHandler("http://localhost:3000/home")))
+                .logout(l -> l.logoutSuccessUrl("/").permitAll())
 
 
-        return http.build();
+        ;
+
+      return   http.build();
     }
 }
