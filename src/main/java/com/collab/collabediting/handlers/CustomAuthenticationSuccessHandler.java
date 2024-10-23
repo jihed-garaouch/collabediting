@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private String redirectUrl;
+    private final String redirectUrl;
 
     public CustomAuthenticationSuccessHandler(String redirectUrl) {
         this.redirectUrl = redirectUrl;
@@ -19,7 +19,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException {
         response.sendRedirect(redirectUrl);
     }
 }

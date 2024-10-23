@@ -1,16 +1,17 @@
+frontend-url: ${FRONTEND_URL}
 
 springdoc:
   api-docs:
-    path: /api-docs # Default path for the JSON OpenAPI definition
+    path: /api-docs
   swagger-ui:
-    path: /swagger-ui.html # Path to access the Swagger UI
+    path: /swagger-ui.html
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/collab_db?createDatabaseIfNotExist=true
-    username: postgres
-    password: pass
-    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER_CLASS_NAME}
   jpa:
     hibernate:
       ddl-auto: create
@@ -25,8 +26,11 @@ spring:
       client:
         registration:
           github:
-
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
             scope: repo
 
 server:
-  port: 4444
+  port: ${SERVER_PORT}
+  servlet:
+    context-path: ${SERVER_CONTEXT_PATH}
