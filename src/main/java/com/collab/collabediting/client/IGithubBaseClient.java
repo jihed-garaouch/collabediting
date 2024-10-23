@@ -3,11 +3,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 public interface IGithubBaseClient<T> {
-    T get(String accessToken, TypeReference<T> typeReference) throws IOException, InterruptedException;
+    T get(TypeReference<T> typeReference) throws IOException, InterruptedException, RuntimeException;
 
-    List<T> getList(String accessToken, TypeReference<List<T>> typeReference) throws IOException, InterruptedException;
+    T get(TypeReference<T> typeReference, String path) throws IOException, InterruptedException, RuntimeException;
 
-    boolean post(String accessToken, T body) throws IOException, InterruptedException;
+    List<T> getList(TypeReference<List<T>> typeReference, String path) throws IOException, InterruptedException, RuntimeException;
 
-    boolean put(String accessToken, T body) throws IOException, InterruptedException;
+    List<T> getList(TypeReference<List<T>> typeReference) throws IOException, InterruptedException, RuntimeException;
+
+    boolean post(T body) throws IOException, InterruptedException;
+
+    boolean put(T body) throws IOException, InterruptedException;
 }

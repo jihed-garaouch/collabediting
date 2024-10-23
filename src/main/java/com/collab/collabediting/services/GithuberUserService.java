@@ -19,10 +19,10 @@ public class GithuberUserService {
         this.githubUserClient = githubUserClient;
     }
 
-    public User getUser(String accessToken) throws IOException, InterruptedException {
+    public User getUser() throws IOException, InterruptedException {
 
         TypeReference<User> typeReference = new TypeReference<User>() {};
-        return githubUserClient.get(accessToken, typeReference);
+        return githubUserClient.get(typeReference);
     }
 
 }
