@@ -25,8 +25,14 @@ spring:
       client:
         registration:
           github:
+            client-secret: 1959f7ea845f8f4554e4fb6af07ed7c7b862f777
+            client-id: Iv23lignrKAI3mPDNSNI
+            scope: repo,read:user,user:email
+        provider:
+          github:
+            user-info-uri: https://api.github.com/user
 
-            scope: repo
+
 
 server:
   port: 4444

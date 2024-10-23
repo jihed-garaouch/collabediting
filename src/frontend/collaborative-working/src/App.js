@@ -2,24 +2,29 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import SignIn from './components/SignIn';
 import CodeEditor from './components/CodeEditor';
-import SignUp from "./components/SignUp";
-import {login} from "./services/authService";
+
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+import Home from "./pages/Home";
 
 const App = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const handleLogin = (token) => {
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
 
-      login();
-    };
+    const darkTheme = createTheme({
+        palette: {
+            mode: 'dark',
+
+        },
+    });
 
     return (
+        <ThemeProvider theme={darkTheme}>
         <Router>
             <Routes>
-                <Route path="/login" element={<SignIn onLogin={handleLogin} />} />
-                <Route path="/signup" element={<SignUp onLogin={handleLogin} />} />
-                <Route path="/" element={isAuthenticated ? <CodeEditor /> : <Navigate to="/login" replace />} />
+                <Route path="/login" element={<SignIn />} />
+                <Route path="/" element={isAuthenticated ? <Home/> : <Navigate to="/login" replace />} />
             </Routes>
         </Router>
+        </ThemeProvider>
     );
 };
 

@@ -17,32 +17,26 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.security.Principal;
 
 @RestController
 public class GithubController {
-    private final OAuth2AuthorizedClientService authorizedClientService;
+
     private final GithuberUserService githuberUserService;
 
     @Autowired
-    public GithubController(OAuth2AuthorizedClientService authorizedClientService, GithuberUserService githuberUserService) {
-        this.authorizedClientService = authorizedClientService;
+    public GithubController( GithuberUserService githuberUserService) {
+        ;
         this.githuberUserService = githuberUserService;
 
     }
 
     @GetMapping("/user")
-    public ResponseEntity<User> getUser(OAuth2AuthenticationToken authentication) {
-        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
-                authentication.getAuthorizedClientRegistrationId(), authentication.getName());
+    public ResponseEntity<User> getUser(OAuth2AuthenticationToken authentication, Principal principal) {
 
-        if (client == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        String accessToken = client.getAccessToken().getTokenValue();
-        User user = null;
+        User  user ;
         try {
-            user = githuberUserService.getUser(accessToken);
+            user = githuberUserService.getUser();
         } catch (IOException e) {
             return ResponseEntity.badRequest().build();
         } catch (InterruptedException e) {

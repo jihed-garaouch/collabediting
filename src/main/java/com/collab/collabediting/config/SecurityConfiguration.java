@@ -3,6 +3,7 @@ package com.collab.collabediting.config;
 import com.collab.collabediting.handlers.CustomAuthenticationSuccessHandler;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,6 +20,10 @@ public class SecurityConfiguration{
 
 
 
+    @Bean
+    public PrincipalExtractor baeldungPrincipalExtractor() {
+        return new GithubPrincipalExtractor();
+    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
