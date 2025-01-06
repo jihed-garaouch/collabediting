@@ -1,9 +1,12 @@
 package com.collab.collabediting.config;
 
 import com.collab.collabediting.handlers.CustomAuthenticationSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,10 +33,15 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList(frontendUrl));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","OPTIONS"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+    @Bean
+    public PrincipalExtractor githubPrincipalExtractor() {
+        return new GithubPrincipalExtractor();
     }
 
     @Bean
@@ -44,11 +52,14 @@ public class SecurityConfiguration {
         http
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/hello").authenticated()
-                                .requestMatchers("/**").permitAll())
+                        authorize.requestMatchers("/**").authenticated()
+                               )
                 .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/github")
                         .successHandler(new CustomAuthenticationSuccessHandler(frontendUrl + "/")))
-                .logout((logout) -> logout.logoutSuccessUrl(frontendUrl + "/login"));
+                .logout((logout) -> logout.logoutSuccessUrl(frontendUrl + "/login"))
+
+                ;
+        http.csrf().disable();
 
         return http.build();
     }

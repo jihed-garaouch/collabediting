@@ -1,4 +1,4 @@
-package com.collab.collabediting.GithubModels;
+package com.collab.collabediting.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

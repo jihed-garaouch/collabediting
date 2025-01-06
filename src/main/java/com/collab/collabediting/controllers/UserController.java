@@ -1,6 +1,6 @@
 package com.collab.collabediting.controllers;
 
-import com.collab.collabediting.models.User;
+import com.collab.collabediting.models.GithubUser;
 import com.collab.collabediting.services.GithuberUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +37,8 @@ public class UserController {
      * <p>This method fetches the authenticated user's details from an OAuth2 provider (e.g., GitHub)
      * using the access token from the {@link OAuth2AuthorizedClient}.</p>
      *
-     * @param authentication the OAuth2 authentication token for the currently authenticated user.
-     * @return a {@link User} containing the user details if found, or an appropriate HTTP status code:
+    
+     * @return a {@link GithubUser} containing the user details if found, or an appropriate HTTP status code:
      * <ul>
      *   <li>{@code 200 OK} if the user is successfully retrieved.</li>
      *   <li>{@code 404 Not Found} if no authorized client or user is found.</li>
@@ -46,29 +46,19 @@ public class UserController {
      * </ul>
      */
     @GetMapping("/me")
-    public ResponseEntity<User> getUser(OAuth2AuthenticationToken authentication) {
-        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
-                authentication.getAuthorizedClientRegistrationId(), authentication.getName());
+    public ResponseEntity<GithubUser> getUser() {
 
-        if (client == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        String accessToken = client.getAccessToken().getTokenValue();
-        User user = null;
+        GithubUser  user ;
         try {
-            user = githuberUserService.getUser(accessToken);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (InterruptedException e) {
+            user = githuberUserService.getUser();
+        } catch (IOException | InterruptedException e) {
             return ResponseEntity.badRequest().build();
         }
-
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-
         return ResponseEntity.ok(user);
     }
+
 
 }

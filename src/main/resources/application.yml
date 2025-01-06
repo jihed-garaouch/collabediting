@@ -7,7 +7,10 @@ springdoc:
     path: /swagger-ui.html
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
+
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
@@ -28,9 +31,9 @@ spring:
           github:
             client-id: ${GITHUB_CLIENT_ID}
             client-secret: ${GITHUB_CLIENT_SECRET}
-            scope: repo
+            scope: repo,read:org
 
 server:
-  port: ${SERVER_PORT}
+  port: 4444
   servlet:
     context-path: ${SERVER_CONTEXT_PATH}

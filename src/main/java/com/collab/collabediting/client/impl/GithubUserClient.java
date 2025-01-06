@@ -1,6 +1,7 @@
 package com.collab.collabediting.client.impl;
 
-import com.collab.collabediting.GithubModels.User;
+import com.collab.collabediting.models.GithubUser;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.net.http.HttpClient;
 
 @Component
-public class GithubUserClient extends GithubBaseClient<User> {
+public class GithubUserClient extends GithubBaseClient<GithubUser> {
 
 
     GithubUserClient(HttpClient httpClient, ObjectMapper jsonMapper, OAuth2AuthorizedClientService authorizedClientService) {

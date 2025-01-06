@@ -1,6 +1,7 @@
 package com.collab.collabediting.services;
 
-import com.collab.collabediting.models.User;
+import com.collab.collabediting.models.GithubUser;
+import com.collab.collabediting.models.GithubUser;
 import com.collab.collabediting.client.impl.GithubUserClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,11 @@ public class GithuberUserService {
         this.githubUserClient = githubUserClient;
     }
 
-    public User getUser() throws IOException, InterruptedException {
+    public GithubUser getUser() throws IOException, InterruptedException {
 
-        TypeReference<User> typeReference = new TypeReference<User>() {};
+        TypeReference<GithubUser> typeReference = new TypeReference<GithubUser>() {};
         return githubUserClient.get(typeReference);
     }
+
 
 }

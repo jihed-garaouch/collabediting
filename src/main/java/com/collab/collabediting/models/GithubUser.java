@@ -28,7 +28,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class GithubUser {
 
     /**
      * The user's name.

@@ -1,4 +1,4 @@
-package com.collab.collabediting.GithubModels;
+package com.collab.collabediting.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,7 +16,7 @@ public class Repo {
     private String name;
     @JsonProperty("full_name")
     private String fullName;
-    private User owner;
+    private   GithubUser owner;
     @JsonProperty("private")
     private Boolean _private;
 }
