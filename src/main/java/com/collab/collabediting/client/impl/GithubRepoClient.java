@@ -16,7 +16,7 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO add get all branches
+
 @Component
 public class GithubRepoClient extends  GithubBaseClient<Repo>{
     private static final String BASE_URL = "https://api.github.com/repos";
@@ -26,23 +26,7 @@ public class GithubRepoClient extends  GithubBaseClient<Repo>{
 
 
 
-    public GithubFile getFileContent(String owner , String repo ,String path  ) throws IOException, InterruptedException, URISyntaxException {
 
-            URI uri = new URI(BASE_URL + "/" + owner + "/" + repo + "/contents/" + path );
-            HttpRequest request= HttpRequest.newBuilder()
-                    .uri(uri)
-                    .header("Authorization","Bearer "+getAccessToken())
-                    .header("Accept","application/vnd.github.object+json")
-                    .GET()
-                    .build();
-
-            HttpResponse<String> response =httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to fetch data: " + response.body());
-            }
-            return jsonMapper.readValue(response.body(),GithubFile.class);
-
-    };
     public GithubFile getFileContent(String owner , String repo ,String ref ,String path  ) throws IOException, InterruptedException, URISyntaxException {
 
         URI uri = new URI(BASE_URL + "/" + owner + "/" + repo + "/contents/" + path +"?ref="+ref);

@@ -1,5 +1,7 @@
 package com.collab.collabediting.client.impl;
 
+import com.collab.collabediting.models.GithubTree;
+import com.collab.collabediting.models.GithubTreeBranch;
 import com.collab.collabediting.models.ProjectStructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,12 +9,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
-public class GithubStructureClient extends  GithubBaseClient<ProjectStructure> {
+public class GithubStructureClient extends  GithubBaseClient<GithubTree> {
 
     private static final String BASE_URL = "https://api.github.com/repos";
     GithubStructureClient(HttpClient httpClient, ObjectMapper jsonMapper,  OAuth2AuthorizedClientService authorizedClientService) {
@@ -20,72 +26,68 @@ public class GithubStructureClient extends  GithubBaseClient<ProjectStructure> {
     }
 
 
-    public List<ProjectStructure> getProjectStructure(String owner, String repo ,String ref) throws Exception{
+    public GithubTree get(String userName, String repoName, String branchName) throws IOException, InterruptedException {
+        String url = constructTreeUrl(userName, repoName, branchName);
+        TypeReference<GithubTree> typeReference = new TypeReference<GithubTree>() {};
+        GithubTree tree = super.get(typeReference, url);
+        tree.setTree(buildTree(tree.getTree()));
 
+        return this.get(typeReference, url);
+    }
+    private String constructTreeUrl(String userName, String repoName, String branchName) {
+        return BASE_URL + "/" + userName + "/" + repoName + "/git/trees/" + branchName + "?recursive=1";
+    }
 
-        List<ProjectStructure>  root =super.getList(getListTypeReferenceStructure(),getPath(owner, repo,ref));
-        root.stream().filter( x -> "dir".equals(x.getType())).forEach(element ->{
+    private  static List<GithubTreeBranch> buildTree(List<GithubTreeBranch> flatList) {
+        Map<String, GithubTreeBranch> pathMap = new HashMap<>();
+        List<GithubTreeBranch> rootNodes = new ArrayList<>();
 
-            try {
-                List<ProjectStructure>  childs = getChildren(element.getUrl());
-                element.setChildren(childs);
+        for (GithubTreeBranch item : flatList) {
+            // Split the path into parts
+            String[] parts = item.getPath().split("/");
+            String currentPath = "";
 
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            GithubTreeBranch currentNode = null;
+            List<GithubTreeBranch> currentChildren = rootNodes;
+
+            for (int i = 0; i < parts.length; i++) {
+                String part = parts[i];
+                currentPath = currentPath.isEmpty() ? part : currentPath + "/" + part;
+
+                if (!pathMap.containsKey(currentPath)) {
+                    GithubTreeBranch newNode = new GithubTreeBranch();
+                    newNode.setPath(item.getPath());
+                    newNode.setName(part);
+                    newNode.setChildren(new ArrayList<>());
+
+                    // Only set properties on the last node in the path
+                    if (i == parts.length - 1) {
+                        newNode.setMode(item.getMode());
+                        newNode.setType(item.getType());
+                        newNode.setUrl(item.getUrl());
+                        newNode.setSha(item.getSha());
+                    }
+
+                    pathMap.put(currentPath, newNode);
+                    currentChildren.add(newNode);
+                    currentNode = newNode;
+                } else {
+                    currentNode = pathMap.get(currentPath);
+                }
+
+                currentChildren = currentNode.getChildren();
             }
+        }
 
-        });
-        return  root;
-
-    }
-    public List<ProjectStructure> getProjectStructure(String owner, String repo ) throws Exception{
-
-        List<ProjectStructure>  root =super.getList(getListTypeReferenceStructure(),getPath(owner, repo));
-        root.stream().filter( x -> "dir".equals(x.getType())).forEach(element ->{
-
-            try {
-                List<ProjectStructure>  childs = getChildren(element.getUrl());
-                element.setChildren(childs);
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-        });
-        return  root;
-
-    }
-    private List<ProjectStructure> getChildren(String path) throws Exception{
-        List<ProjectStructure>  root =super.getList(getListTypeReferenceStructure(),path);
-        root.stream().filter( x -> "dir".equals(x.getType())).forEach(element ->{
-
-            try {
-                List<ProjectStructure>  childs = getChildren(element.getUrl());
-                element.setChildren(childs);
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-        });
-        return root;
-
+        return rootNodes;
     }
 
-    private String getPath(String owner, String repo) {
-        return  BASE_URL+"/"+owner+"/"+repo+"/contents";
 
-    }
-    private String getPath(String owner, String repo,String ref) {
-        return  BASE_URL+"/"+owner+"/"+repo+"/contents?ref="+ref;
 
-    }
-    private TypeReference<ProjectStructure> getTypeReferenceStructure(){
-      return new TypeReference<ProjectStructure>() {};
-    }
-    private TypeReference<List<ProjectStructure>> getListTypeReferenceStructure(){
-        return new TypeReference<List<ProjectStructure>>() {};
-    }
+
+
+
+
 
 
 

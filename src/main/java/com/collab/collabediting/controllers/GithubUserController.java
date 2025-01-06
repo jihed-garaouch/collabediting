@@ -2,7 +2,8 @@ package com.collab.collabediting.controllers;
 
 
 import com.collab.collabediting.models.GithubUser;
-import com.collab.collabediting.services.GithuberUserService;
+
+import com.collab.collabediting.services.GithubUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,10 @@ import java.io.IOException;
 @RestController
 public class GithubUserController {
 
-    private final GithuberUserService githuberUserService;
+    private final GithubUserService githuberUserService;
 
     @Autowired
-    public GithubUserController(GithuberUserService githuberUserService) {
+    public GithubUserController(GithubUserService githuberUserService) {
         ;
         this.githuberUserService = githuberUserService;
 
@@ -36,5 +37,6 @@ public class GithubUserController {
         }
         return ResponseEntity.ok(user);
     }
+
 
 }

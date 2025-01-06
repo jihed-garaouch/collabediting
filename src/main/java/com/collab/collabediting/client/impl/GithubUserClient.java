@@ -18,4 +18,5 @@ public class GithubUserClient extends GithubBaseClient<GithubUser> {
         super(httpClient,jsonMapper, "https://api.github.com/user", authorizedClientService);
     }
 
+
 }

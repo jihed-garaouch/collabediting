@@ -1,7 +1,9 @@
 package com.collab.collabediting.controllers;
 
 import com.collab.collabediting.models.GithubUser;
-import com.collab.collabediting.services.GithubRepoService;
+import com.collab.collabediting.services.GithubUserService;
+
+
 import com.collab.collabediting.services.TaskService;
 import com.collab.collabediting.models.Task ;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +16,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("task")
 public class TaskController {
 
     private final TaskService taskService;
-    private final GithubRepoService githubRepoService;
-    public TaskController(TaskService taskService , GithubRepoService githubRepoService) {
+    private final GithubUserService githubUserService;
+    public TaskController(TaskService taskService , GithubUserService githubUserService) {
         this.taskService = taskService;
-        this.githubRepoService = githubRepoService;
+        this.githubUserService = githubUserService;
 
     }
     @GetMapping("{repoName}/{owner}")
@@ -71,15 +73,37 @@ public class TaskController {
 
             return  ResponseEntity.badRequest().build();
         }
+
     }
-//    @DeleteMapping("{repoName}/{owner}")
-//    ResponseEntity<Task> deleteTask(@PathVariable String repoName,@PathVariable String owner) {
-//
-//    }
+    @GetMapping("{repoName}/{owner}/collaborators")
+    ResponseEntity<List<GithubUser>> getRepoCollaborators(@PathVariable String repoName,@PathVariable String owner) {
+        try {
+            List<GithubUser>  users = this.githubUserService.getCollabortors(owner ,repoName);
+            return    ResponseEntity.ok(users);
+        }catch(Exception e){
+
+            return  ResponseEntity.badRequest().build();
+        }
+
+    }
+   @DeleteMapping("{repoName}/{owner}/{id}")
+   ResponseEntity<Void> deleteTask(@PathVariable String repoName,@PathVariable String owner,@PathVariable  Integer id) {
+     try {
+         if (HasAccessToRepo(owner, repoName)) {
+             return ResponseEntity.badRequest().build();
+         }
+         this.taskService.deleteTask(id);
+         return ResponseEntity.ok().build();
+     }
+     catch(Exception e){
+         return  ResponseEntity.badRequest().build();
+     }
+   }
+
     private boolean HasAccessToRepo( String owner,String repoName) throws IOException, InterruptedException {
 
         String loginName =getUserConnectedName();
-        List<GithubUser>  users = this.githubRepoService.getRepoCollabortors(owner ,repoName);
+        List<GithubUser>  users = this.githubUserService.getCollabortors(owner ,repoName);
         return users.stream().noneMatch(user -> user.getLogin().equals(loginName));
     }
     private String getUserConnectedName(){

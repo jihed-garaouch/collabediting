@@ -1,5 +1,6 @@
 package com.collab.collabediting.services;
 
+import com.collab.collabediting.enums.BoardTypes;
 import com.collab.collabediting.repository.TaskRepo;
 import com.collab.collabediting.models.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,12 @@ public class TaskService {
       taskRepo.save(task);
       return true;
     }
-    public boolean deleteTask(Task task){
-        taskRepo.delete(task);
-        return true;
+    public void deleteTask(Integer id){
+        taskRepo.deleteById(id);
+
+    }
+    public List<Task> getMyInProgressTasks(String assignee,String repoName){
+        return taskRepo.findAllByAssigneeAndStatusAndRepoName(assignee, BoardTypes.Doing,repoName);
     }
 
 

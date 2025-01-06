@@ -1,7 +1,8 @@
 package com.collab.collabediting.controllers;
 
 import com.collab.collabediting.models.GithubUser;
-import com.collab.collabediting.services.GithuberUserService;
+
+import com.collab.collabediting.services.GithubUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -22,10 +23,10 @@ import java.io.IOException;
  */
 public class UserController {
     private final OAuth2AuthorizedClientService authorizedClientService;
-    private final GithuberUserService githuberUserService;
+    private final GithubUserService githuberUserService;
 
     @Autowired
-    UserController(OAuth2AuthorizedClientService authorizedClientService, GithuberUserService githuberUserService) {
+    UserController(OAuth2AuthorizedClientService authorizedClientService, GithubUserService githuberUserService) {
         this.authorizedClientService = authorizedClientService;
         this.githuberUserService = githuberUserService;
 

@@ -44,7 +44,7 @@ public class GithubRepoController {
     }
 
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<Boolean> createRepo(
             @RequestBody Repo repo) throws IOException, InterruptedException {
         boolean result = githubRepoService.createRepo( repo);
@@ -63,15 +63,7 @@ public class GithubRepoController {
             return ResponseEntity.badRequest().build();
         }
     }
-    @GetMapping("structure/{userName}/{repoName}")
-    public ResponseEntity<GithubTree> getRepoStructre(@PathVariable String userName, @PathVariable String repoName, @PathParam("ref") String ref) throws IOException, InterruptedException {
-        try {
-            GithubTree structure = githubRepoService.getStructure(userName, repoName, ref);
-            return ResponseEntity.ok(structure);
-        } catch (IOException | InterruptedException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+
 
 
 
