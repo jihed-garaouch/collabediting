@@ -1,10 +1,10 @@
 package com.collab.collabediting.controllers;
 
 import com.collab.collabediting.models.GithubUser;
-import com.collab.collabediting.services.GithubUserService;
+import com.collab.collabediting.services.impl.GithubUserService;
 
 
-import com.collab.collabediting.services.TaskService;
+import com.collab.collabediting.services.ITaskService;
 import com.collab.collabediting.models.Task ;
 import org.springframework.http.ResponseEntity;
 
@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-@CrossOrigin("*")
+@CrossOrigin(origins = "https://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("task")
 public class TaskController {
 
-    private final TaskService taskService;
+    private final ITaskService taskService;
     private final GithubUserService githubUserService;
-    public TaskController(TaskService taskService , GithubUserService githubUserService) {
+    public TaskController(ITaskService taskService , GithubUserService githubUserService) {
         this.taskService = taskService;
         this.githubUserService = githubUserService;
 
@@ -37,6 +37,20 @@ public class TaskController {
         List<Task> tasks = this.taskService.getTasksByRepoName(repoName);
 
         return ResponseEntity.ok(tasks);}
+        catch(Exception e){
+
+            return  ResponseEntity.badRequest().build();
+        }
+    }
+    @GetMapping("{repoName}/{owner}/myTasks")
+    ResponseEntity<List<Task>> getMyTasks(@PathVariable String repoName,@PathVariable String owner) {
+        try{
+            if(HasAccessToRepo(owner, repoName)) {
+                return  ResponseEntity.badRequest().build();
+            }
+            List<Task> tasks = this.taskService.getMyTasks( getUserConnectedName(),repoName);
+
+            return ResponseEntity.ok(tasks);}
         catch(Exception e){
 
             return  ResponseEntity.badRequest().build();

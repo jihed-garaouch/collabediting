@@ -4,10 +4,7 @@ import com.collab.collabediting.enums.BoardTypes;
 import com.collab.collabediting.enums.TaskPriority;
 import com.collab.collabediting.enums.TaskTags;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 @Entity
 @Getter
@@ -25,6 +22,7 @@ public class Task {
     private TaskTags type ;
     private TaskPriority priority;
     @JsonProperty("column")
+    @Enumerated(EnumType.STRING)
     private BoardTypes status ;
 
 }

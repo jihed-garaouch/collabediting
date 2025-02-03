@@ -61,6 +61,7 @@ public class SecurityConfiguration {
                         authorize.requestMatchers("/**").authenticated()
                                )
                 .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/github")
+
                         .successHandler(new CustomAuthenticationSuccessHandler(frontendUrl + "/")))
                 .logout((logout) -> logout.logoutSuccessUrl(frontendUrl + "/login"))
 

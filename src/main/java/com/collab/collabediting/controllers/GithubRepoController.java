@@ -2,19 +2,17 @@ package com.collab.collabediting.controllers;
 
 import com.collab.collabediting.models.*;
 import com.collab.collabediting.requests.UpdateFileRequest;
-import com.collab.collabediting.services.GithubRepoService;
-import jakarta.websocket.server.PathParam;
+import com.collab.collabediting.services.impl.GithubRepoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.MessageDigest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "https://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("/repos")
 public class GithubRepoController {

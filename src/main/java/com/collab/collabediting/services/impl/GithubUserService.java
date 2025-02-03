@@ -1,4 +1,4 @@
-package com.collab.collabediting.services;
+package com.collab.collabediting.services.impl;
 
 import com.collab.collabediting.models.GithubUser;
 import com.collab.collabediting.client.impl.GithubUserClient;

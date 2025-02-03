@@ -1,11 +1,9 @@
-package com.collab.collabediting.services;
+package com.collab.collabediting.services.impl;
 
 import com.collab.collabediting.client.impl.GithubStructureClient;
 import com.collab.collabediting.models.GithubTree;
 import com.collab.collabediting.models.GithubTreeBranch;
-import com.collab.collabediting.models.ProjectStructure;
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

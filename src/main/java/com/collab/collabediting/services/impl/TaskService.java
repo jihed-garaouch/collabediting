@@ -1,8 +1,8 @@
-package com.collab.collabediting.services;
+package com.collab.collabediting.services.impl;
 
-import com.collab.collabediting.enums.BoardTypes;
 import com.collab.collabediting.repository.TaskRepo;
 import com.collab.collabediting.models.Task;
+import com.collab.collabediting.services.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TaskService {
+public class TaskService implements ITaskService {
     @Autowired
     private TaskRepo taskRepo;
     public TaskService(
@@ -32,9 +32,10 @@ public class TaskService {
         taskRepo.deleteById(id);
 
     }
-    public List<Task> getMyInProgressTasks(String assignee,String repoName){
-        return taskRepo.findAllByAssigneeAndStatusAndRepoName(assignee, BoardTypes.Doing,repoName);
+    public List<Task> getMyTasks(String assignee,String repoName){
+        return taskRepo.findAllByAssigneeAndRepoNameWhereStatus(assignee,repoName);
     }
+
 
 
 

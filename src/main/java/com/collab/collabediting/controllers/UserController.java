@@ -2,12 +2,11 @@ package com.collab.collabediting.controllers;
 
 import com.collab.collabediting.models.GithubUser;
 
-import com.collab.collabediting.services.GithubUserService;
+import com.collab.collabediting.services.impl.GithubUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,8 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin(origins = "https://localhost:5173", allowCredentials = "true")
+
 /**
  *UserController to handle all user operation
  */

@@ -1,19 +1,14 @@
-package com.collab.collabediting.services;
+package com.collab.collabediting.services.impl;
 
 import com.collab.collabediting.models.*;
 import com.collab.collabediting.client.impl.GithubRepoClient;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class GithubRepoService {

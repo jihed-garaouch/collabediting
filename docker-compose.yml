@@ -1,21 +1,23 @@
-version: '3'
+version: '3.9'
 services:
   db:
     container_name: collaborative_editing
-    image: postgres
+    image: postgres:latest
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: pass
-      PGDATA: /data/postgres
+      POSTGRES_DB: collab_db
     volumes:
-      - db:/data/postgres
+      - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
-      - db
+      - db_network
     restart: unless-stopped
+
 networks:
-  db:
+  db_network:
     driver: bridge
+
 volumes:
-  db:
+  db_data:
